@@ -13,16 +13,11 @@ logger = logging.getLogger(__name__)
 class DenseRNNNet(Module):
     def __init__(self, hidden_size_list, dict_size, embed_size,
                  dropout_ratio, model_name, max_depth, out_hidden_size,
-                 num_classes=2, use_all_steps=True, batch_first=True,
-                 output_two_layers=False, layer_norm=False,
-                 simple_output=False,
+                 num_classes=2, batch_first=True,
                  loss_func=nn.CrossEntropyLoss,
                  bidirectional=True,
-                 batch_size=64,
-                 use_all_layers=True,
-                 bias=True, log_base=2,
+                 bias=True,
                  hierarchical=True, add_dense_block=True,
-                 use_new_implementation=False,
                  add_transition_function=False):
         super(DenseRNNNet, self).__init__()
         self.dict_size = dict_size
@@ -30,7 +25,6 @@ class DenseRNNNet(Module):
         self.drop = nn.Dropout(p=dropout_ratio)
         self.embed_in = nn.Embedding(dict_size, embed_size)
         self.dropout_ratio = dropout_ratio
-        self.use_all_layers = use_all_layers
 
         self.model = DenseRNNBase(
             mode=model_name,
@@ -77,10 +71,7 @@ class DenseRNNNet(Module):
 
         hidden_list, hidden_new, all_history_states = self.model(packed_input, hidden, batch_sizes)
 
-        if self.use_all_layers:
-            h = hidden_list.view(-1, self.rnn_hidden_size)
-        else:
-            h = hidden_list[-1, :, :]
+        h = hidden_list[-1, :, :]
 
         return self.output_layer(self.drop(h)), hidden_new
 

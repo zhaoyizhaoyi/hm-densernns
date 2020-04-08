@@ -108,18 +108,11 @@ def load_model(model_name, config_args, text_field):
             model_name=model_name,
             max_depth=config_args["max_depth"],
             out_hidden_size=config_args["output_hidden_size"],
-            output_two_layers=config_args["output_two_layers"],
-            layer_norm=config_args["layer_norm"],
             num_classes=config_args["num_classes"],
-            use_all_steps=config_args["use_all_steps"],  # default False
             batch_first=config_args["batch_first"],
-            simple_output=config_args["simple_output"],
             bidirectional=config_args["bidirectional"],
-            batch_size=config_args["batch_size"],
-            use_all_layers=config_args["use_all_layers"],
             hierarchical=config_args["hierarchical"],
             add_dense_block=config_args["add_dense_block"],
-            use_new_implementation=config_args["use_new_implementation"] if "use_new_implementation" in config_args else False,
             add_transition_function=config_args["add_transition_function"] if "add_transition_function" in config_args else False
         )
     else:
